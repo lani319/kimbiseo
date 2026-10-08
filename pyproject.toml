@@ -1,0 +1,20 @@
+[project]
+name = "kimbiseo"
+version = "0.1.0"
+description = "Always-on-top desktop widget for tracking tasks, deadlines and assignees"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.gui-scripts]
+kimbiseo = "kimbiseo.widget:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["kimbiseo"]
