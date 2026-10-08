@@ -1,5 +1,7 @@
 # 김비서 (kimbiseo)
 
+[![test](https://github.com/lani319/kimbiseo/actions/workflows/test.yml/badge.svg)](https://github.com/lani319/kimbiseo/actions/workflows/test.yml)
+
 PC 바탕화면에 띄워두는 **업무 스케줄 위젯**. 업무명 · 기한 · 담당자만 적으면 D-Day 순으로 정렬해서 보여준다.
 
 ![screenshot](docs/screenshot.png)
@@ -46,8 +48,10 @@ python -m kimbiseo
 
 ```bash
 pip install -e ".[dev]"
-pytest
+pytest            # Linux 헤드리스 환경: xvfb-run -a pytest
 ```
+
+CI(GitHub Actions)는 PR · master push마다 Ubuntu/Windows × Python 3.10/3.13 에서 단위 테스트와 위젯 GUI 스모크 테스트를 실행한다.
 
 - `kimbiseo/store.py` — 모델 · 기한 파싱 · JSON 저장 (UI 독립, 단위 테스트 대상)
 - `kimbiseo/widget.py` — tkinter 위젯
