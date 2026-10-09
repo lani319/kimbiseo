@@ -1,0 +1,10 @@
+{
+  "pen_name": "필명",
+  "blocklist": ["회사명", "회사 영문명", "실명", "팀/사내 서비스명"],
+  "allow_terms": [],
+  "allow_domains": ["ayhlabs.com"],
+  "links": {
+    "kimbiseo": "https://ayhlabs.com/kimbiseo",
+    "myidol": "https://ayhlabs.com/myidol"
+  }
+}
