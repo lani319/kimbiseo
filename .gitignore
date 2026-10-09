@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# build-log skill: local config (blocklist), drafts, metrics — never commit
+.build-log/
