@@ -1,0 +1,3 @@
+# Real config holds event details; browser profile holds the logged-in session.
+config.yaml
+.browser-profile/

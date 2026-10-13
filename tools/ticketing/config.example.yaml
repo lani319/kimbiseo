@@ -1,0 +1,27 @@
+# Copy to config.yaml (git-ignored) and fill in.
+# Selectors are placeholders until the real pages are recorded with
+#   playwright codegen "<event page url>"
+
+event_url: "https://event.thaiticketmajor.com/TODO"            # 공연 상세 페이지
+login_url: "https://event.thaiticketmajor.com/user/signin.php?query=954"
+open_at: "2026-11-01T10:00:00+07:00"   # 오픈 시각, 반드시 UTC 오프셋 포함 (방콕 +07:00)
+lead_seconds: 0.0                       # 오픈 몇 초 전부터 버튼 확인 시작할지
+reload_interval: 1.0                    # 새로고침 최소 간격(초), 0.5 미만 거부
+open_timeout: 600                       # 버튼이 안 열리면 몇 초 후 포기
+step_timeout: 15                        # 날짜/회차 단계별 대기 한도(초)
+# time_source_url: "https://event.thaiticketmajor.com/"   # 기본값: event_url 의 도메인
+
+# 본인 Chrome 사용 시: chrome --remote-debugging-port=9222 --user-data-dir=<별도 폴더>
+# cdp_url: "http://127.0.0.1:9222"
+user_data_dir: ".browser-profile"
+
+selectors:
+  book_button: "TODO: e.g. a.btn-buynow:not(.disabled)"
+  date_option: "TODO: e.g. li.date-item:has-text('{value}')"
+  time_option: "TODO: e.g. li.round-item:has-text('{value}')"
+  handoff: "TODO (optional): captcha box or seat map selector"
+  # waiting_room: "TODO (optional): waiting room indicator"
+
+preferences:
+  dates: ["01/11/2026", "02/11/2026"]   # 우선순위 순, 화면에 보이는 텍스트 그대로
+  times: ["19:00", "14:00"]

@@ -1,0 +1,40 @@
+name: ticketing
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "tools/ticketing/**"
+      - ".github/workflows/ticketing.yml"
+  pull_request:
+    paths:
+      - "tools/ticketing/**"
+      - ".github/workflows/ticketing.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: tools/ticketing
+
+jobs:
+  pytest:
+    name: pytest (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: tools/ticketing/pyproject.toml
+      - run: pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - run: pytest -v
