@@ -1,0 +1,63 @@
+name: buynow-release
+
+# Builds a Python-free Windows bundle (buynow.exe + run_example.bat) with PyInstaller.
+# - every push / PR touching tools/buynow -> downloadable workflow artifact
+# - tag buynow-v* -> also attached to a GitHub Release
+on:
+  push:
+    paths:
+      - "tools/buynow/**"
+      - ".github/workflows/buynow-release.yml"
+    tags: ["buynow-v*"]
+  pull_request:
+    paths:
+      - "tools/buynow/**"
+      - ".github/workflows/buynow-release.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: tools/buynow
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: tools/buynow/pyproject.toml
+      - run: pip install . pyinstaller
+      - name: PyInstaller (onedir; Edge is used, so no browser is bundled)
+        run: pyinstaller --noconfirm --onedir --console --name buynow --paths . packaging/entry.py
+      - name: Smoke test exe against a local page with the runner's built-in Edge
+        shell: pwsh
+        run: |
+          $page = Join-Path $env:RUNNER_TEMP 'shop.html'
+          '<!doctype html><button id="b">BUY TICKET</button>' | Set-Content -Encoding utf8 $page
+          $url = ([System.Uri]$page).AbsoluteUri
+          .\dist\buynow\buynow.exe $url "//button[@id='b']" --headless --max-attempts 2 `
+            --exit-after-click --profile (Join-Path $env:RUNNER_TEMP 'prof')
+          if ($LASTEXITCODE -ne 0) { throw "smoke test failed: $LASTEXITCODE" }
+      - name: Package
+        shell: pwsh
+        run: |
+          Copy-Item run_example.bat, README.md dist\buynow\
+          Compress-Archive -Path dist\buynow -DestinationPath dist\buynow-windows.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: buynow-windows
+          path: tools/buynow/dist/buynow-windows.zip
+      - if: startsWith(github.ref, 'refs/tags/buynow-v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: tools/buynow/dist/buynow-windows.zip

@@ -1,0 +1,23 @@
+[project]
+name = "buynow"
+version = "0.1.0"
+description = "Reload a page until the element at an XPath reads the target label, then click it"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+dependencies = ["playwright>=1.45"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+buynow = "buynow.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["buynow"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

@@ -7,6 +7,8 @@
 ```
 widgets/            # 독립 실행형 위젯 (각자 자체 의존성 · 테스트 · CI)
   kimbiseo/         # 김비서 — 바탕화면 업무 스케줄 위젯 (Python/tkinter)
+tools/              # 독립 실행형 CLI 도구
+  buynow/           # 예매 오픈 시각에 새로고침 → 버튼 라벨 확인 → 자동 클릭 (Python/Playwright)
 sites/              # 웹사이트 (예정: ayhlabs.com)
 .github/workflows/  # 프로젝트별 워크플로, paths 필터로 변경된 프로젝트만 실행
 ```
@@ -14,6 +16,7 @@ sites/              # 웹사이트 (예정: ayhlabs.com)
 | 프로젝트 | 설명 | 상태 |
 |---|---|---|
 | [김비서](widgets/kimbiseo) | 업무명 · 기한 · 담당자를 D-Day 순으로 보여주는 always-on-top 위젯 | [![kimbiseo](https://github.com/lani319/kimbiseo/actions/workflows/kimbiseo.yml/badge.svg)](https://github.com/lani319/kimbiseo/actions/workflows/kimbiseo.yml) |
+| [buynow](tools/buynow) | KST 오픈 시각 10초 전부터 새로고침, XPath 라벨이 `BUY TICKET` 이면 클릭 | [![buynow](https://github.com/lani319/kimbiseo/actions/workflows/buynow.yml/badge.svg)](https://github.com/lani319/kimbiseo/actions/workflows/buynow.yml) |
 
 ## 규칙
 
