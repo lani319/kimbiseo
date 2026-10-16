@@ -13,7 +13,10 @@ KST = timezone(timedelta(hours=9), "KST")
 def parse_kst(value: str) -> datetime:
     """'2026-10-20 20:00', '2026-10-20 20:00:00', '2026-10-20T20:00:00' -> aware KST datetime.
     An explicit offset in the string (e.g. '+09:00', 'Z') is honoured as-is."""
-    dt = datetime.fromisoformat(value.strip().replace(" ", "T", 1))
+    value = value.strip().replace(" ", "T", 1)
+    if value[-1:] in ("Z", "z"):  # fromisoformat accepts 'Z' only from Python 3.11
+        value = value[:-1] + "+00:00"
+    dt = datetime.fromisoformat(value)
     return dt.replace(tzinfo=KST) if dt.tzinfo is None else dt
 
 
