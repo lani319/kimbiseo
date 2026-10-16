@@ -1,0 +1,41 @@
+name: buynow
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "tools/buynow/**"
+      - ".github/workflows/buynow.yml"
+  pull_request:
+    paths:
+      - "tools/buynow/**"
+      - ".github/workflows/buynow.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: tools/buynow
+
+jobs:
+  pytest:
+    name: pytest (${{ matrix.os }}, py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: tools/buynow/pyproject.toml
+      - run: pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - run: pytest -v
