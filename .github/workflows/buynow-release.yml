@@ -1,7 +1,7 @@
 name: buynow-release
 
 # Builds a Python-free Windows bundle (buynow.exe + run_example.bat) with PyInstaller.
-# - every push touching tools/buynow -> downloadable workflow artifact
+# - every push / PR touching tools/buynow -> downloadable workflow artifact
 # - tag buynow-v* -> also attached to a GitHub Release
 on:
   push:
@@ -9,6 +9,10 @@ on:
       - "tools/buynow/**"
       - ".github/workflows/buynow-release.yml"
     tags: ["buynow-v*"]
+  pull_request:
+    paths:
+      - "tools/buynow/**"
+      - ".github/workflows/buynow-release.yml"
   workflow_dispatch:
 
 concurrency:
