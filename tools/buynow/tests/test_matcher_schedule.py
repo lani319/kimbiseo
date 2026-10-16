@@ -53,3 +53,13 @@ def test_cli_defaults_and_guards():
         parse_args(["https://x", "//b", "--interval", "0.1"])
     with pytest.raises(SystemExit):
         parse_args(["https://x", "//b", "--at", "tomorrow 8pm"])
+
+
+def test_prompt_argv_builds_cli_args():
+    from buynow.cli import prompt_argv
+
+    answers = iter(["https://x", "//button", "2026-10-20 20:00:00", ""])
+    argv = prompt_argv(ask=lambda _: next(answers))
+    cfg = parse_args(argv)
+    assert cfg.expected == "BUY TICKET"
+    assert cfg.open_at == datetime(2026, 10, 20, 20, 0, tzinfo=KST)

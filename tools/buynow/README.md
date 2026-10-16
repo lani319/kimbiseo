@@ -3,7 +3,17 @@
 예매 오픈 시각(KST) **10초 전부터 새로고침** → XPath 요소의 라벨이 `BUY TICKET` 인지 확인 → **마우스 클릭**.
 Windows 11 기본 브라우저 **Edge** 를 그대로 사용하므로 별도 브라우저 다운로드가 필요 없다.
 
-## 설치 (Windows 11, Python 3.10+)
+## 설치 A — Python 없는 PC (권장)
+
+1. GitHub `Actions > buynow-release` 최신 성공 실행에서 **`buynow-windows`** 아티팩트 다운로드
+   (태그 `buynow-v*` 를 푸시하면 Releases 에도 올라간다)
+2. 압축 해제 → `buynow\buynow.exe` **더블클릭** → URL · XPath · 오픈 시각 · 버튼 글자 입력
+   - 또는 `run_example.bat` 값을 고쳐 더블클릭 (exe 가 옆에 있으면 자동으로 exe 사용)
+3. 처음 실행 시 SmartScreen 경고(서명 안 된 exe)가 뜨면 `추가 정보 > 실행`
+
+브라우저는 Windows 11 기본 Edge 를 쓰므로 추가 설치는 필요 없다.
+
+## 설치 B — Python 있는 PC (Python 3.10+)
 
 ```powershell
 cd tools\buynow
@@ -58,6 +68,9 @@ python -m buynow "https://ticket.example.com/goods/123" "//button[@id='buy']" --
 - 새로고침 간격을 너무 줄이면 IP 차단될 수 있어 0.5초 미만은 막아뒀다.
 
 ## 개발
+
+exe 빌드는 Windows 에서만 가능 (CI: `.github/workflows/buynow-release.yml`). 로컬 Windows 에서 직접 빌드:
+`pip install . pyinstaller && pyinstaller --onedir --console --name buynow --paths . packaging/entry.py`
 
 ```bash
 pip install -e ".[dev]" && playwright install chromium
